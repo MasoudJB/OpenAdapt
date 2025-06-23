@@ -163,6 +163,19 @@ possible memory leak
 pointing the cursor and left or right clicking, as described in this
 [open issue](https://github.com/OpenAdaptAI/OpenAdapt/issues/145)
 
+### Saving recordings to DynamoDB
+
+If you would like each completed recording to be sent to a DynamoDB backed
+service, enable `DYNAMODB_ENABLED` in `data/config.json` and set
+`DYNAMODB_API_URL` to your REST endpoint. Optionally provide
+`DYNAMODB_API_KEY` if the endpoint requires it. When enabled, the recorder will
+POST a JSON object of the form:
+
+```json
+{"recording_ID": "<id>", "steps": [...]} 
+```
+to the configured URL after post-processing events.
+
 
 ### Visualize
 

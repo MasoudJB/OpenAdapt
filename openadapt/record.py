@@ -41,7 +41,7 @@ import whisper
 
 from openadapt import plotting, utils, video, window
 from openadapt.config import config
-from openadapt.db import crud
+from openadapt.db import crud, dynamo
 from openadapt.extensions import synchronized_queue as sq
 from openadapt.models import ActionEvent
 
@@ -1630,8 +1630,7 @@ def record(
 
     logger.info(f"Saved {recording_timestamp=}")
 
-    with crud.get_new_session(read_and_write=True) as session:
-        crud.post_process_events(session, recording)
+    finalize_recording(recording)
 
     if terminate_recording is not None:
         terminate_recording.set()
@@ -1641,6 +1640,15 @@ def record(
         status_pipe.send({"type": "record.stopped"})
 
     crud.release_db_lock()
+
+
+def finalize_recording(recording: Recording) -> None:
+    """Run post-processing and save the recording to DynamoDB."""
+
+    with crud.get_new_session(read_and_write=True) as session:
+        crud.post_process_events(session, recording)
+
+    dynamo.save_recording_to_dynamo(recording)
 
 
 # Entry point
