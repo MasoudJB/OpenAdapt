@@ -121,6 +121,9 @@ class Config(BaseSettings):
     # Database
     DB_ECHO: bool = False
     DB_URL: ClassVar[str] = f"sqlite:///{DATABASE_FILE_PATH}"
+    DYNAMODB_ENABLED: bool = False
+    DYNAMODB_API_URL: str = ""
+    DYNAMODB_API_KEY: str = ""
 
     # Error reporting
     ERROR_REPORTING_ENABLED: bool = True
@@ -281,6 +284,7 @@ class Config(BaseSettings):
             "OPENAI_API_KEY",
             "ANTHROPIC_API_KEY",
             "GOOGLE_API_KEY",
+            "DYNAMODB_API_KEY",
         ],
         "scrubbing": [
             "SCRUB_ENABLED",
@@ -299,6 +303,8 @@ class Config(BaseSettings):
         "general": [
             "UNIQUE_USER_ID",
             "REDIRECT_TO_ONBOARDING",
+            "DYNAMODB_ENABLED",
+            "DYNAMODB_API_URL",
         ],
     }
 
