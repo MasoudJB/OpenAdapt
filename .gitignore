@@ -39,5 +39,3 @@ src
 dist/
 build/
 
-OpenAdapt.spec
-build_scripts/OpenAdapt.iss
